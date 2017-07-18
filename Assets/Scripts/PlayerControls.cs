@@ -7,6 +7,7 @@ public class PlayerControls : MonoBehaviour
 	public float moveSensitivity = 1f;
 	public float maxHorizontalSpeed = 5;
 	public float maxVerticalSpeed = 5;
+	public float touchSensitivity = 50f;
 
 	private Vector2 touchOrigin = -Vector2.one;
 	private Rigidbody playerRigidbody;
@@ -45,14 +46,25 @@ public class PlayerControls : MonoBehaviour
 		float verticalMove = 0f;
 		if (Input.touchCount > 0) {
 			Touch touch = Input.touches [0];
+
 			if (touch.phase == TouchPhase.Began) {
+				// Record touch start position
 				touchOrigin = touch.position;
-			} else if (touch.phase == TouchPhase.Ended && touchOrigin.x >= 0) {
+			} else if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Moved)
+			           && touchOrigin.x >= 0) {
+				// Calculate touch direction (aka swipe move)
 				Vector2 touchEnd = touch.position;
-				horizontalMove = touchEnd.x - touchOrigin.x;
-				verticalMove = touchEnd.y - touchOrigin.y;
-				touchOrigin.x = -1;
-			}
+				Vector2 touchMove = new Vector2 ();
+				touchMove.x = touchEnd.x - touchOrigin.x;
+				touchMove.y = touchEnd.y - touchOrigin.y;
+
+				// Move the player when the swipe is big enough or finished
+				if (touchMove.magnitude > touchSensitivity || touch.phase == TouchPhase.Moved) {
+					touchOrigin = touch.position;
+					horizontalMove = touchMove.x;
+					verticalMove = touchMove.y;
+				}
+			} 
 		}
 		return new Vector2 (horizontalMove, verticalMove);
 	}
