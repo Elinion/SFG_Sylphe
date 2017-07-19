@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
-	public float moveSpeed = 100f;
+	public float constantForwardMoveForce = 50f;
+	public float maxSwipeForce = 50f;
+	public float maxSwipeLength = 600f;
 	public float maxHorizontalSpeed = 5;
 	public float maxVerticalSpeed = 5;
-	public float touchSensitivity = 50f;
 
 	private Vector2 touchOrigin = -Vector2.one;
-	private Vector2 lastTouch = -Vector2.one;
 	private Rigidbody playerRigidbody;
 	private Vector2 swipeInput = Vector2.zero;
 
@@ -48,27 +48,11 @@ public class PlayerControls : MonoBehaviour
 		if (Input.touchCount > 0) {
 			Touch touch = Input.touches [0];
 			if (touch.phase == TouchPhase.Began) {
-				// Record touch start position
 				touchOrigin = touch.position;
-				lastTouch = touch.position;
-			} else if (touch.phase == TouchPhase.Moved && touchOrigin.x >= 0) {
-				// Calculate touch direction (aka swipe move)
-				Vector2 touchEnd = touch.position;
-				Vector2 touchMove = new Vector2 ();
-				touchMove.x = touchEnd.x - lastTouch.x;
-				touchMove.y = touchEnd.y - lastTouch.y;
-
-				// Move the player when the swipe is big enough or finished
-				if (touchMove.magnitude > touchSensitivity) {
-					lastTouch = touch.position;
-					horizontalMove = touchMove.x;
-					verticalMove = touchMove.y;
-				}
 			} else if (touch.phase == TouchPhase.Ended) {
 				horizontalMove = touch.position.x - touchOrigin.x;
 				verticalMove = touch.position.y - touchOrigin.y;
 				touchOrigin = -Vector2.one;
-				lastTouch = -Vector2.one;
 			}
 		}
 		return new Vector2 (horizontalMove, verticalMove);
@@ -76,7 +60,10 @@ public class PlayerControls : MonoBehaviour
 
 	private void MovePlayer (Vector2 swipeMove)
 	{
+		float swipeLength = swipeMove.magnitude;
+		float moveSpeed = swipeLength * maxSwipeForce / maxSwipeLength;
 		Vector3 moveForce = -swipeMove.normalized * moveSpeed;
+		moveForce.y += constantForwardMoveForce;
 		playerRigidbody.AddForce (moveForce);
 		ApplySpeedLimits ();
 	}
