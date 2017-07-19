@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
-	public float moveSensitivity = 1f;
+	public float moveSpeed = 100f;
 	public float maxHorizontalSpeed = 5;
 	public float maxVerticalSpeed = 5;
 	public float touchSensitivity = 50f;
 
 	private Vector2 touchOrigin = -Vector2.one;
+	private Vector2 lastTouch = -Vector2.one;
 	private Rigidbody playerRigidbody;
 	private Vector2 swipeInput = Vector2.zero;
 
@@ -46,32 +47,36 @@ public class PlayerControls : MonoBehaviour
 		float verticalMove = 0f;
 		if (Input.touchCount > 0) {
 			Touch touch = Input.touches [0];
-
 			if (touch.phase == TouchPhase.Began) {
 				// Record touch start position
 				touchOrigin = touch.position;
-			} else if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Moved)
-			           && touchOrigin.x >= 0) {
+				lastTouch = touch.position;
+			} else if (touch.phase == TouchPhase.Moved && touchOrigin.x >= 0) {
 				// Calculate touch direction (aka swipe move)
 				Vector2 touchEnd = touch.position;
 				Vector2 touchMove = new Vector2 ();
-				touchMove.x = touchEnd.x - touchOrigin.x;
-				touchMove.y = touchEnd.y - touchOrigin.y;
+				touchMove.x = touchEnd.x - lastTouch.x;
+				touchMove.y = touchEnd.y - lastTouch.y;
 
 				// Move the player when the swipe is big enough or finished
-				if (touchMove.magnitude > touchSensitivity || touch.phase == TouchPhase.Moved) {
-					touchOrigin = touch.position;
+				if (touchMove.magnitude > touchSensitivity) {
+					lastTouch = touch.position;
 					horizontalMove = touchMove.x;
 					verticalMove = touchMove.y;
 				}
-			} 
+			} else if (touch.phase == TouchPhase.Ended) {
+				horizontalMove = touch.position.x - touchOrigin.x;
+				verticalMove = touch.position.y - touchOrigin.y;
+				touchOrigin = -Vector2.one;
+				lastTouch = -Vector2.one;
+			}
 		}
 		return new Vector2 (horizontalMove, verticalMove);
 	}
 
 	private void MovePlayer (Vector2 swipeMove)
 	{
-		Vector3 moveForce = -swipeMove.normalized * moveSensitivity;
+		Vector3 moveForce = -swipeMove.normalized * moveSpeed;
 		playerRigidbody.AddForce (moveForce);
 		ApplySpeedLimits ();
 	}
