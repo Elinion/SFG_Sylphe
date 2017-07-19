@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-	public int score = 0;
+	public int scoreModifier = 0;
 	public Text scoreText;
 
 	private List<Checkpoint> checkpoints = new List<Checkpoint> ();
@@ -17,7 +17,8 @@ public class Score : MonoBehaviour
 
 	void Update ()
 	{
-		score = GetScore ();
+		int score = GetScore () + scoreModifier;
+		score = Mathf.Max (score, 0);
 		scoreText.text = score.ToString ();
 	}
 
