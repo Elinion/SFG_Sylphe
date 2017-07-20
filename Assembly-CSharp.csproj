@@ -51,6 +51,52 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCamera.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCcChangeCursorLinear.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveChange.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveClosestPoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveDynamic.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveRuntime.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveRuntimeCustomFields.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveShowcase.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveStatic.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestDirector.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestMainMenu.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestPerformance.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorChangeLinear.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorObjectRotate.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorObjectScale.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorObjectTranslate.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcSplitterPolyline.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcSweep2D.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcTriangulate2D.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcVisualizationLineRenderer.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcWithCursor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcWithCursorObject.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcWithMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGPolylineSplitter.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGPpu.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGTriangulator2D.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCc.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurve.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveAdaptiveMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveBaseMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveCalculatorClosestPoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveChangedArgs.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveFormulaMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveFormulas.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveMathI.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePointComponent.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePointField.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePointGO.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePointI.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveReferenceToPoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveSettings.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGReflectionAdapter.cs" />
      <Compile Include="Assets\Scripts\CameraShake.cs" />
      <Compile Include="Assets\Scripts\Checkpoint.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
@@ -59,6 +105,8 @@
      <Compile Include="Assets\Scripts\PowerDown.cs" />
      <Compile Include="Assets\Scripts\Score.cs" />
      <Compile Include="Assets\Scripts\Tags.cs" />
+     <None Include="Assets\BansheeGz\BGCurve\readme.txt" />
+     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -80,6 +128,10 @@
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{B74D5B0E-552D-B79A-5AA7-99271F4500F3}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
