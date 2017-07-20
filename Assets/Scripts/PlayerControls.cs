@@ -11,12 +11,12 @@ public class PlayerControls : MonoBehaviour
 	public float maxVerticalSpeed = 5;
 
 	private Vector2 touchOrigin = -Vector2.one;
-	private Rigidbody playerRigidbody;
+	private Rigidbody2D playerRigidbody;
 	private Vector2 swipeInput = Vector2.zero;
 
 	void Awake ()
 	{
-		playerRigidbody = GetComponent<Rigidbody> ();
+		playerRigidbody = GetComponent<Rigidbody2D> ();
 	}
 
 	void FixedUpdate ()
@@ -62,7 +62,7 @@ public class PlayerControls : MonoBehaviour
 	{
 		float swipeLength = swipeMove.magnitude;
 		float moveSpeed = swipeLength * maxSwipeForce / maxSwipeLength;
-		Vector3 moveForce = -swipeMove.normalized * moveSpeed;
+		Vector2 moveForce = -swipeMove.normalized * moveSpeed;
 		moveForce.y += constantForwardMoveForce;
 		playerRigidbody.AddForce (moveForce);
 		ApplySpeedLimits ();

@@ -16,7 +16,7 @@ public class PowerDown : MonoBehaviour
 		cameraShake = GameObject.FindGameObjectWithTag (Tags.MainCamera).GetComponent<CameraShake> ();
 	}
 
-	void OnTriggerEnter (Collider other)
+	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == Tags.Player) {
 			score.scoreModifier -= scoreLost;
