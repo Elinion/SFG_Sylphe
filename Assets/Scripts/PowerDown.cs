@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PowerDown : MonoBehaviour
 {
-	public int scoreLost = 200;
+	public int pointsLost = 50;
 	public float rotationSpeed = 5f;
 
 	private Score score;
@@ -19,7 +19,7 @@ public class PowerDown : MonoBehaviour
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == Tags.Player) {
-			score.scoreModifier -= scoreLost;
+			score.LosePoints (pointsLost);
 			cameraShake.Shake ();
 		}
 	}

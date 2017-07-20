@@ -5,37 +5,47 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-	public int scoreModifier = 0;
+	public float modifier = 1f;
 	public Text scoreText;
+	public ScoreCollider bestScoreCollider;
+	public int bestPointsPerSecond = 32;
+	public ScoreCollider goodScoreCollider;
+	public int goodPointsPerSecond = 16;
+	public ScoreCollider mediumScoreCollider;
+	public int mediumPointsPerSecond = 8;
+	public ScoreCollider lowScoreCollider;
+	public int lowPointsPerSecond = 4;
+	public int minPointsPerSecond = 2;
 
-	private List<Checkpoint> checkpoints = new List<Checkpoint> ();
-
-	void Awake ()
-	{
-		LoadAllCheckpoints ();
-	}
+	private float score = 0f;
 
 	void Update ()
 	{
-		int score = GetScore () + scoreModifier;
-		score = Mathf.Max (score, 0);
-		scoreText.text = score.ToString ();
+		float gainedPoints = GetPoints () * modifier;
+		score += gainedPoints;
+		score = Mathf.Max (score, 0f);
+		scoreText.text = Mathf.FloorToInt (score).ToString ();
 	}
 
-	private void LoadAllCheckpoints ()
+	public void LosePoints (int pointsLost)
 	{
-		GameObject[] checkpointsGameObjects = GameObject.FindGameObjectsWithTag (Tags.Checkpoint);
-		foreach (GameObject checkpointGameObject in checkpointsGameObjects) {
-			checkpoints.Add (checkpointGameObject.GetComponent<Checkpoint> ());
-		}
+		score -= pointsLost;
+		score = Mathf.Max (score, 0f);
 	}
 
-	private int GetScore ()
+	private float GetPoints ()
 	{
-		int score = 0;
-		foreach (Checkpoint checkpoint in checkpoints) {
-			score += checkpoint.Points;
+		float points = minPointsPerSecond;
+		if (bestScoreCollider.IsActive) {
+			points = bestPointsPerSecond;
+		} else if (goodScoreCollider.IsActive) {
+			points = goodPointsPerSecond;
+		} else if (mediumScoreCollider.IsActive) {
+			points = mediumPointsPerSecond;
+		} else if (lowScoreCollider.IsActive) {
+			points = lowPointsPerSecond;
 		}
-		return score;
+		points *= Time.deltaTime;
+		return points;
 	}
 }
