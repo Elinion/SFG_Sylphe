@@ -20,9 +20,15 @@ public class Score : MonoBehaviour
 	public Text multiplierText;
 	public float defaultMultiplier = 1f;
 	public float bonusDuration = 3f;
-	public float bonusMultiplier = 2f;
-	public float bonusActivationTime = 2.5f;
-	public float goodBonusMultiplier = 3f;
+	public float smallBonusMultiplier = 2f;
+	public float smallBonusActivationTime = 2f;
+	public ParticleSystem smallBonusVisuals;
+	public float mediumBonusMultiplier = 3f;
+	public float mediumBonusActivationTime = 4f;
+	public ParticleSystem mediumBonusVisuals;
+	public float largeBonusMultiplier = 5f;
+	public float largeBonusActivationTime = 6f;
+	public ParticleSystem largeBonusVisuals;
 
 	private float score = 0f;
 	private float timeOnLine = 0f;
@@ -34,6 +40,7 @@ public class Score : MonoBehaviour
 	{
 		lastMultiplierReached = defaultMultiplier;
 		multiplierHUD.SetActive (false);
+		PauseBonusVisuals ();
 	}
 
 	void Update ()
@@ -53,6 +60,7 @@ public class Score : MonoBehaviour
 		} else {
 			multiplierHUD.SetActive (false);
 		}
+		ShowBonusVisuals (multiplier);
 	}
 
 	public void LosePoints (int pointsLost)
@@ -66,6 +74,13 @@ public class Score : MonoBehaviour
 		lastMultiplierReached = defaultMultiplier;
 		lastTimeOnLine = Time.time;
 		timeOnLine = 0f;
+	}
+
+	private void PauseBonusVisuals ()
+	{
+		smallBonusVisuals.Pause ();
+		mediumBonusVisuals.Pause ();
+		largeBonusVisuals.Pause ();
 	}
 
 	private float GetMultiplier ()
@@ -82,11 +97,15 @@ public class Score : MonoBehaviour
 			
 		// If the user has been long enough on the line,
 		// increase the score multiplier
-		if (timeOnLine > bonusActivationTime) {
+		if (timeOnLine > smallBonusActivationTime) {
+			multiplier = smallBonusMultiplier;
 			if (bestScoreCollider.IsActive) {
-				multiplier = goodBonusMultiplier;
-			} else {
-				multiplier = bonusMultiplier;
+				if (timeOnLine >= largeBonusActivationTime) {
+					multiplier = largeBonusMultiplier;
+				} else if (timeOnLine >= mediumBonusActivationTime) {
+					multiplier = mediumBonusMultiplier;
+				} else {
+				}
 			}
 		} 
 			
@@ -127,5 +146,17 @@ public class Score : MonoBehaviour
 		}
 		points *= Time.deltaTime;
 		return points;
+	}
+
+	private void ShowBonusVisuals (float multiplier)
+	{
+		PauseBonusVisuals ();
+		if (multiplier >= largeBonusMultiplier) {
+			largeBonusVisuals.Play ();
+		} else if (multiplier >= mediumBonusMultiplier) {
+			mediumBonusVisuals.Play ();
+		} else if (multiplier >= smallBonusMultiplier) {
+			smallBonusVisuals.Play ();
+		}
 	}
 }
