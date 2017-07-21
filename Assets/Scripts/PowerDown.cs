@@ -20,6 +20,7 @@ public class PowerDown : MonoBehaviour
 	{
 		if (other.gameObject.tag == Tags.Player) {
 			score.LosePoints (pointsLost);
+			score.CancelAllBonuses ();
 			cameraShake.Shake ();
 		}
 	}
