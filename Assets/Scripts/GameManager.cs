@@ -10,27 +10,20 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 	[System.Serializable]
-	public class SaveBlob
+	public class DataToSave
 	{
 		public int bestScore = 0;
 	}
 
 	public static GameManager instance = null;
 
-	public SaveBlob saveBlob;
+	public DataToSave dataToSave;
 	private string savePath;
 
 	void Awake ()
 	{
-		if (instance == null) {
-			instance = this;
-		} else if (instance != this) {
-			Destroy (gameObject);    
-		}
+		ImplementSingleton ();
 
-		System.Environment.SetEnvironmentVariable ("MONO_REFLECTION_SERIALIZER", "yes");
-		savePath = Application.persistentDataPath + "/save.dat";
-		saveBlob = new SaveBlob ();
 		LoadData ();
 	}
 
@@ -43,27 +36,40 @@ public class GameManager : MonoBehaviour
 	{
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (savePath);
-		bf.Serialize (file, saveBlob);
+		bf.Serialize (file, dataToSave);
 		file.Close ();
 	}
 
 	public void LoadData ()
 	{
+		System.Environment.SetEnvironmentVariable ("MONO_REFLECTION_SERIALIZER", "yes");
+		savePath = Application.persistentDataPath + "/save.dat";
+		dataToSave = new DataToSave ();
+
 		if (File.Exists (savePath)) {
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Open (savePath, FileMode.Open);
-			saveBlob = (SaveBlob)bf.Deserialize (file);
+			dataToSave = (DataToSave)bf.Deserialize (file);
 			file.Close ();
 		}
 	}
 
-	public void LoadLevel (string levelName)
+	public void LoadScene (string sceneName)
 	{
-		SceneManager.LoadScene (levelName);
+		SceneManager.LoadScene (sceneName);
 	}
 
 	public void QuitApplication ()
 	{
 		Application.Quit ();
+	}
+
+	private void ImplementSingleton ()
+	{
+		if (instance == null) {
+			instance = this;
+		} else {
+			Destroy (gameObject);    
+		}
 	}
 }

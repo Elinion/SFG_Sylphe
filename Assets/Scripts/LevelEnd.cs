@@ -21,7 +21,7 @@ public class LevelEnd : MonoBehaviour
 
 	void Start ()
 	{
-		float displayScore = GameManager.instance.saveBlob.bestScore * score.displayScoreMultiplier;
+		float displayScore = GameManager.instance.dataToSave.bestScore * score.displayScoreMultiplier;
 		bestScoreText.text = Mathf.FloorToInt (displayScore).ToString ();
 	}
 
@@ -34,8 +34,8 @@ public class LevelEnd : MonoBehaviour
 			rb.velocity = Vector2.zero;
 			rb.gravityScale = 0f;
 
-			if (score.Points > GameManager.instance.saveBlob.bestScore) {
-				GameManager.instance.saveBlob.bestScore = score.Points;
+			if (score.Points > GameManager.instance.dataToSave.bestScore) {
+				GameManager.instance.dataToSave.bestScore = score.Points;
 				GameManager.instance.SaveData ();
 				bestScore.SetActive (true);
 				bestScore.SetActive (true);

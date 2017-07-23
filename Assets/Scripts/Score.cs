@@ -37,7 +37,6 @@ public class Score : MonoBehaviour
 	}
 
 	private float timeOnLine = 0f;
-	private float lastTimeOnLine = 0f;
 	private float lastTimeBonusWasActivated = 0f;
 	private float lastMultiplierReached;
 
@@ -45,6 +44,7 @@ public class Score : MonoBehaviour
 	{
 		lastMultiplierReached = defaultMultiplier;
 		multiplierHUD.SetActive (false);
+		CancelAllBonuses ();
 		PauseBonusVisuals ();
 	}
 
@@ -76,7 +76,6 @@ public class Score : MonoBehaviour
 	public void CancelAllBonuses ()
 	{
 		lastMultiplierReached = defaultMultiplier;
-		lastTimeOnLine = Time.time;
 		timeOnLine = 0f;
 	}
 
@@ -94,7 +93,6 @@ public class Score : MonoBehaviour
 		// Calculate how long the user has been on the line
 		if (goodScoreCollider.IsActive) {
 			timeOnLine += Time.deltaTime;
-			lastTimeOnLine = Time.time;
 		} else {
 			timeOnLine = 0f;
 		}
