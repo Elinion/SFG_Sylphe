@@ -12,7 +12,6 @@ public class PlayerControls : MonoBehaviour
 
 	private Vector2 touchOrigin = -Vector2.one;
 	private Rigidbody2D playerRigidbody;
-	private Vector2 swipeInput = Vector2.zero;
 
 	void Awake ()
 	{
@@ -21,26 +20,8 @@ public class PlayerControls : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		MovePlayer (swipeInput);
-	}
-
-	void Update ()
-	{
-		#if UNITY_ANDROID
-
-		swipeInput = GetSwipeInput ();
-
-		#else
-
-		swipeInput = Vector2.zero;
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-			swipeInput.x = maxSwipeLength * .5f;
-		} 
-		if (Input.GetKeyDown (KeyCode.RightArrow)) {
-			swipeInput.x = -maxSwipeLength * .5f;
-		}
-
-		#endif
+		Vector2 input = HandleInput ();
+		MovePlayer (input);
 	}
 
 	private void ApplySpeedLimits ()
@@ -53,6 +34,18 @@ public class PlayerControls : MonoBehaviour
 			playerVelocity.y = playerVelocity.y > 0 ? maxVerticalSpeed : -maxVerticalSpeed;
 		}
 		playerRigidbody.velocity = playerVelocity;
+	}
+
+	private Vector2 GetKeyboardInput ()
+	{
+		Vector2 input = Vector2.zero;
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			input.x = maxSwipeLength * .5f;
+		} 
+		if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			input.x = -maxSwipeLength * .5f;
+		}
+		return input;
 	}
 
 	private Vector2 GetSwipeInput ()
@@ -70,6 +63,23 @@ public class PlayerControls : MonoBehaviour
 			}
 		}
 		return new Vector2 (horizontalMove, verticalMove);
+	}
+
+	private Vector2 HandleInput ()
+	{
+		Vector2 input;
+
+		#if UNITY_ANDROID
+
+		input = GetSwipeInput ();
+
+		#else
+
+		input = GetKeyboardInput ();
+
+		#endif
+
+		return input;
 	}
 
 	private void MovePlayer (Vector2 swipeMove)
