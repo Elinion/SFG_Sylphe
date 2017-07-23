@@ -9,6 +9,16 @@ public class LevelEnd : MonoBehaviour
 	public GameObject newRecord;
 	public GameObject bestScore;
 	public Text bestScoreText;
+	public Text finishMessage;
+	public GameObject zeroStarPerformance;
+	public GameObject oneStarPerformance;
+	public int oneStarMinScore;
+	public GameObject twoStarPerformance;
+	public int twoStarMinScore;
+	public GameObject threeStarPerformance;
+	public int threeStarMinScore;
+	public GameObject trophyPerformance;
+	public int trophyMinScore;
 
 	private Player player;
 	private Score score;
@@ -29,19 +39,48 @@ public class LevelEnd : MonoBehaviour
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == Tags.Player) {
-			levelEndHUD.SetActive (true);
-
-			if (score.Points > GameManager.instance.dataToSave.bestScore) {
-				GameManager.instance.dataToSave.bestScore = score.Points;
-				GameManager.instance.SaveData ();
-				bestScore.SetActive (true);
-				bestScoreText.text = score.Points.ToString ();
-			} else {
-				newRecord.SetActive (false);
-			}
-
-			player.Freeze ();
-			score.enabled = false;
+			ShowFinishHUD ();
+			ShowPlayerPerformance ();
+			HandleNewRecords ();
+			StopPlayer ();
 		}
+	}
+
+	private void HandleNewRecords ()
+	{
+		if (score.Points > GameManager.instance.dataToSave.bestScore) {
+			GameManager.instance.dataToSave.bestScore = score.Points;
+			GameManager.instance.SaveData ();
+			bestScore.SetActive (true);
+			bestScoreText.text = score.Points.ToString ();
+		} else {
+			newRecord.SetActive (false);
+		}
+	}
+
+	private void ShowFinishHUD ()
+	{
+		levelEndHUD.SetActive (true);
+	}
+
+	private void ShowPlayerPerformance ()
+	{
+		if (score.Points >= trophyMinScore) {
+			trophyPerformance.SetActive (true);
+		} else if (score.Points >= threeStarMinScore) {
+			threeStarPerformance.SetActive (true);
+		} else if (score.Points >= twoStarMinScore) {
+			twoStarPerformance.SetActive (true);
+		} else if (score.Points >= oneStarMinScore) {
+			oneStarPerformance.SetActive (true);
+		} else {
+			zeroStarPerformance.SetActive (true);
+		}
+	}
+
+	private void StopPlayer ()
+	{
+		player.Freeze ();
+		score.enabled = false;
 	}
 }
