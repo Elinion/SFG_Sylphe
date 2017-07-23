@@ -6,40 +6,42 @@ using UnityEngine.UI;
 public class LevelEnd : MonoBehaviour
 {
 	public GameObject levelEndHUD;
+	public GameObject newRecord;
 	public GameObject bestScore;
 	public Text bestScoreText;
 
-	private GameObject player;
+	private Player player;
 	private Score score;
 
 	void Awake ()
 	{
-		player = GameObject.FindGameObjectWithTag (Tags.Player);
+		player = GameObject.FindGameObjectWithTag (Tags.Player).GetComponent<Player> ();
 		score = GameObject.FindGameObjectWithTag (Tags.Score).GetComponent<Score> ();
 		levelEndHUD.SetActive (false);
 	}
 
 	void Start ()
 	{
-		float displayScore = GameManager.instance.dataToSave.bestScore * score.displayScoreMultiplier;
-		bestScoreText.text = Mathf.FloorToInt (displayScore).ToString ();
+		float score = GameManager.instance.dataToSave.bestScore;
+		bestScoreText.text = Mathf.FloorToInt (score).ToString ();
 	}
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == Tags.Player) {
 			levelEndHUD.SetActive (true);
-			player.GetComponent<PlayerControls> ().enabled = false;
-			Rigidbody2D rb = player.GetComponent<Rigidbody2D> ();
-			rb.velocity = Vector2.zero;
-			rb.gravityScale = 0f;
 
 			if (score.Points > GameManager.instance.dataToSave.bestScore) {
 				GameManager.instance.dataToSave.bestScore = score.Points;
 				GameManager.instance.SaveData ();
 				bestScore.SetActive (true);
-				bestScore.SetActive (true);
-			} 
+				bestScoreText.text = score.Points.ToString ();
+			} else {
+				newRecord.SetActive (false);
+			}
+
+			player.Freeze ();
+			score.enabled = false;
 		}
 	}
 }

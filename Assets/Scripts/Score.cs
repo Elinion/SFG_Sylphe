@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Score : MonoBehaviour
 {
 	public Text scoreText;
-	public float displayScoreMultiplier = 1f;
+	public float pointsMultiplier = .1f;
 	public ScoreCollider bestScoreCollider;
 	public int bestPointsPerSecond = 32;
 	public ScoreCollider goodScoreCollider;
@@ -30,10 +30,10 @@ public class Score : MonoBehaviour
 	public float largeBonusActivationTime = 6f;
 	public ParticleSystem largeBonusVisuals;
 
-	private float score = 0f;
+	private float points = 0f;
 
 	public int Points {
-		get { return Mathf.FloorToInt (score); }
+		get { return Mathf.FloorToInt (points); }
 	}
 
 	private float timeOnLine = 0f;
@@ -52,11 +52,9 @@ public class Score : MonoBehaviour
 	{
 		float multiplier = GetMultiplier ();
 		float gainedPoints = GetPoints () * multiplier;
-		score += gainedPoints;
-		score = Mathf.Max (score, 0f);
-
-		float displayScore = score * displayScoreMultiplier;
-		scoreText.text = Mathf.FloorToInt (displayScore).ToString ();
+		points += gainedPoints;
+		points = Mathf.Max (points, 0f);
+		scoreText.text = Mathf.FloorToInt (Points).ToString ();
 
 		// Show the score multiplier if a bonus is currently activated
 		if (multiplier > defaultMultiplier) {
@@ -70,7 +68,7 @@ public class Score : MonoBehaviour
 
 	public void LosePoints (int pointsLost)
 	{
-		score -= pointsLost;
+		points -= pointsLost;
 	}
 
 	public void CancelAllBonuses ()
@@ -106,8 +104,7 @@ public class Score : MonoBehaviour
 					multiplier = largeBonusMultiplier;
 				} else if (timeOnLine >= mediumBonusActivationTime) {
 					multiplier = mediumBonusMultiplier;
-				} else {
-				}
+				} 
 			}
 		} 
 			
@@ -147,6 +144,7 @@ public class Score : MonoBehaviour
 			points = lowPointsPerSecond;
 		}
 		points *= Time.deltaTime;
+		points *= pointsMultiplier;
 		return points;
 	}
 
