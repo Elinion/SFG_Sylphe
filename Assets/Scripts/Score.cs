@@ -31,6 +31,11 @@ public class Score : MonoBehaviour
 	public ParticleSystem largeBonusVisuals;
 
 	private float score = 0f;
+
+	public int Points {
+		get { return Mathf.FloorToInt (score); }
+	}
+
 	private float timeOnLine = 0f;
 	private float lastTimeOnLine = 0f;
 	private float lastTimeBonusWasActivated = 0f;
@@ -66,7 +71,6 @@ public class Score : MonoBehaviour
 	public void LosePoints (int pointsLost)
 	{
 		score -= pointsLost;
-		score = Mathf.Max (score, 0f);
 	}
 
 	public void CancelAllBonuses ()

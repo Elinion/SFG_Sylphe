@@ -26,7 +26,21 @@ public class PlayerControls : MonoBehaviour
 
 	void Update ()
 	{
+		#if UNITY_ANDROID
+
 		swipeInput = GetSwipeInput ();
+
+		#else
+
+		swipeInput = Vector2.zero;
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			swipeInput.x = maxSwipeLength * .5f;
+		} 
+		if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			swipeInput.x = -maxSwipeLength * .5f;
+		}
+
+		#endif
 	}
 
 	private void ApplySpeedLimits ()

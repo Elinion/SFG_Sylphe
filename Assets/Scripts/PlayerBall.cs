@@ -13,8 +13,11 @@ public class PlayerBall : MonoBehaviour
 
 	void Update ()
 	{
-		Vector2 velocity = playerRigidbody.velocity * -1;
-		transform.rotation = Quaternion.LookRotation (velocity);
+		if (playerRigidbody.velocity.magnitude > 0) {
+			// Rotating the ball also rotates the bonus visual effects
+			Vector2 velocity = playerRigidbody.velocity * -1;
+			transform.rotation = Quaternion.LookRotation (velocity);
+		}
 	}
 
 }
