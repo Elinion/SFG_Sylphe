@@ -12,10 +12,8 @@ public class Authentication : MonoBehaviour
 	public GameObject signingInMessage;
 	public GameObject signingOutMessage;
 	public GameObject signInFailedMessage;
-	public bool skipWhenAuthenticated = false;
+	public bool autoSignIn = false;
 
-	private bool receivedSignInResponse = false;
-	private bool signInSuccessful = false;
 	private bool signingOut = false;
 
 	void Awake ()
@@ -31,30 +29,25 @@ public class Authentication : MonoBehaviour
 	{
 		GooglePlayGames.PlayGamesPlatform.Activate ();
 
-		if (Social.localUser.authenticated) {
-			if (skipWhenAuthenticated) {
+		if (autoSignIn) {
+			if (Social.localUser.authenticated) {
 				GoBackToMenu ();
 			} else {
-				signOutDescription.SetActive (true);
-				signOutButton.SetActive (true); 
+				SignIn ();
 			}
+		} 
+
+		if (Social.localUser.authenticated) {
+			signOutButton.SetActive (true);
+			signOutDescription.SetActive (true);
 		} else {
-			signInDescription.SetActive (true);
 			signInButton.SetActive (true);
+			signInDescription.SetActive (true);
 		}
 	}
 
 	void Update ()
 	{
-		if (receivedSignInResponse) {
-			receivedSignInResponse = false;
-			if (signInSuccessful) {
-				GoBackToMenu ();
-			} else {
-				HideAllMessages ();
-				signInFailedMessage.SetActive (true);
-			}
-		}
 		if (signingOut) {
 			if (!Social.localUser.authenticated) {
 				GoBackToMenu ();
@@ -67,8 +60,12 @@ public class Authentication : MonoBehaviour
 		HideAllMessages ();
 		signingInMessage.SetActive (true);
 		Social.localUser.Authenticate ((bool success) => {
-			receivedSignInResponse = true;
-			signInSuccessful = success;
+			if (success) {
+				GoBackToMenu ();
+			} else {
+				HideAllMessages ();
+				signInFailedMessage.SetActive (true);
+			}
 		});
 	}
 

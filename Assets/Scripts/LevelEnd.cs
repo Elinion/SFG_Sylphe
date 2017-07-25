@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SocialPlatforms;
 
 public class LevelEnd : MonoBehaviour
 {
@@ -48,11 +49,16 @@ public class LevelEnd : MonoBehaviour
 
 	private void HandleNewRecords ()
 	{
+		if (!Social.localUser.authenticated) {
+			return;
+		}
 		if (score.Points > GameManager.instance.dataToSave.bestScore) {
 			GameManager.instance.dataToSave.bestScore = score.Points;
 			GameManager.instance.SaveData ();
 			bestScore.SetActive (true);
 			bestScoreText.text = score.Points.ToString ();
+			Social.ReportScore (score.Points, "CgkI1qyu67QEEAIQAQ", (bool success) => {
+			});
 		} else {
 			newRecord.SetActive (false);
 		}
