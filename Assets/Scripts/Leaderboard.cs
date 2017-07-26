@@ -9,13 +9,6 @@ public class Leaderboard : MonoBehaviour
 {
 	public void Show ()
 	{
-		PlayGamesPlatform.Instance.LoadScores (
-			GPGSIds.leaderboard_general,
-			LeaderboardStart.PlayerCentered,
-			100,
-			LeaderboardCollection.Public,
-			LeaderboardTimeSpan.AllTime,
-			(data) => {
-			});
+		Social.ShowLeaderboardUI ();
 	}
 }
